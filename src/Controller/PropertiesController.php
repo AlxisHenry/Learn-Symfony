@@ -27,6 +27,12 @@ class PropertiesController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
         $user = $entityManager->getRepository(Users::class)->find($id);
+
+        if ($action === 'delete') {
+            // todo => Delete user from db and redirect him to submit page
+            return $this->redirectToRoute('properties.submit');
+        }
+
         return $this->render('properties/properties.html.twig', [
             'action' => $action,
             'id' => $id,
@@ -35,11 +41,13 @@ class PropertiesController extends AbstractController
     }
 
     /**
-     * @Route("/properties/{action}/submit", name="properties.submit", methods={"GET","POST"})
+     * @Route("/properties/submit/{action}", name="properties.submit", methods={"GET","POST"})
      * @return Response
      * */
     public function submit(ManagerRegistry $doctrine, string $action) :Response {
         $entityManager = $doctrine->getManager();
+        // todo => Show confirmation message
+        // todo => Add user if [action === new]
         if(count($_POST) < 5) {
             return $this->redirectToRoute('homepage');
         }

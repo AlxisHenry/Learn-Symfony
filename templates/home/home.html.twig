@@ -19,6 +19,7 @@
                         <p class="card-text">From {{ user.city }} in {{ user.state   }}.</p>
                         <a href="/properties/{{ user.id }}/edit" class="btn btn-primary my-1">Edit</a>
                         <form action="/properties/{{ user.id }}/delete" method="post" class="btn-primary">
+                            <input type="hidden" value="{{ user.id }}">
                             <button type="submit" class="btn btn-primary">Remove</button>
                         </form>
                     </div>

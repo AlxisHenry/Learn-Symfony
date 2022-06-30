@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="container d-flex justify-center flex-column mt-5">
-    <form class="needs-validation d-flex justify-center flex-column" method="POST" action="{{  path('properties.submit') }}">
+    <form class="needs-validation d-flex justify-center flex-column" method="POST" action="/properties/{{action is defined ? action : 'new'}}/submit">
         <div class="form-row">
             <div class="col-md mb-3">
                 <label for="validationTooltip01">Username</label>
