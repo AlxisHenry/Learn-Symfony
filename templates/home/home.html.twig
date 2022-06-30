@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+    Home - Henry Alexis
+
+{% endblock title %}
+
+{% block body %}
+
+    <div class="container mt-5">
+
+        {% for user in users %}
+
+                <div class="card mt-2 mb-2">
+                    <h5 class="card-header">{{ user.username }}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.email }}</h5>
+                        <p class="card-text">From {{ user.city }} in {{ user.state   }}.</p>
+                        <a href="/properties/{{ user.id }}/edit" class="btn btn-primary my-1">Edit</a>
+                        <form action="/properties/{{ user.id }}/delete" method="post" class="btn-primary">
+                            <button type="submit" class="btn btn-primary">Remove</button>
+                        </form>
+                    </div>
+                </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+{% endblock body %}

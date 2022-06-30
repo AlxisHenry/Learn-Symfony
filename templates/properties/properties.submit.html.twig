@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirm your action{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5">
+        <div class="card py-5 d-flex">
+            <div class="card-body col-mb d-flex align-items-center font-weight-bolder flex-column">
+                Action successfully completed.
+                <span>
+                    Back to <a href="/">home</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        {{ dump(user) }}
+    </div>
+
+{% endblock %}

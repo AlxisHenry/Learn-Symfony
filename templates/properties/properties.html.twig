@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Make action' %}
+
+{% block body %}
+
+<div class="container d-flex justify-center flex-column mt-5">
+    <form class="needs-validation d-flex justify-center flex-column" method="POST" action="{{  path('properties.submit') }}">
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <label for="validationTooltip01">Username</label>
+                <input type="text" class="form-control py-4" id="validationTooltip01" placeholder="Username" name="username" value="{{ user is not defined ? '' : user.username  }}" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md mb-3">
+                <label for="validationTooltip02">Password</label>
+                <input type="text" class="form-control py-4" id="validationTooltip02" placeholder="Password" name="password" value="{{ user is not defined ? '' : user.password  }}" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md mb-3">
+                <label for="validationTooltipUsername">Email</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text py-4" id="validationTooltipUsernamePrepend">@</span>
+                    </div>
+                    <input type="text" class="form-control py-4" id="validationTooltipUsername" placeholder="gmail.com" value="{{ user is not defined ? '' : user.email|split('@')[1] }}" name="suffix_mail" aria-describedby="validationTooltipUsernamePrepend" required>
+                    <div class="invalid-tooltip">
+                        Please choose a unique and valid username.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md mb-3">
+                <label for="validationTooltip03">City</label>
+                <input type="text" class="form-control py-4" id="validationTooltip03" placeholder="City" value="{{ user is not defined ? '' : user.city  }}" name="city" required>
+                <div class="invalid-tooltip">
+                    Please provide a valid city.
+                </div>
+            </div>
+            <div class="col-md mb-3">
+                <label for="validationTooltip04">State</label>
+                <input type="text" class="form-control py-4" id="validationTooltip04" placeholder="State" value="{{ user is not defined ? '' : user.state  }}" name="state" required>
+                <div class="invalid-tooltip">
+                    Please provide a valid state.
+                </div>
+            </div>
+            <div class="col-md mb-3">
+                <label for="validationTooltip05">Zip</label>
+                <input type="text" class="form-control py-4" id="validationTooltip05" placeholder="Zip" value="{{ user is not defined ? '' : user.zip  }}" name="zip" required>
+                <div class="invalid-tooltip">
+                    Please provide a valid zip.
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="action" value="{{ action is defined ? action : 'new' }}">
+        <button class="btn btn-primary py-4 text-uppercase" type="submit">Submit form</button>
+    </form>
+</div>
+
+{% endblock %}
