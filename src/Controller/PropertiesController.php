@@ -20,7 +20,68 @@ class PropertiesController extends AbstractController
     }
 
     /**
-     * @Route("/properties/{id}/{action}", name="properties.action", methods={"GET","POST"})
+     * @Route("/properties/submit/{action}", name="properties.submit", methods={"GET","POST"})
+     * @return Response
+     * */
+    public function submit(ManagerRegistry $doctrine, string $action) :Response {
+
+        $entityManager = $doctrine->getManager();
+
+        $post_user = [];
+        $return_values = [
+            'action' => $action
+        ];
+
+        if($action === 'new' || $action === 'edit') {
+            $post_user = [
+                'username' => $_POST['username'],
+                'password' => $_POST['password'],
+                'email' => strtolower($_POST['username'].'@'.$_POST['suffix_mail']),
+                'city' => $_POST['city'],
+                'state' => $_POST['state'],
+                'zip' => $_POST['zip'],
+                'id' => $_POST['id'] ?? ''
+            ];
+        }
+
+        switch ($action) {
+            case 'new':
+                if (count($_POST) > 5) {
+                    if(!($entityManager->getRepository(Users::class)->findBy(['username' => $post_user['username']]))) {
+                        $user = new Users();
+                        $user->setUsername($post_user['username']);
+                        $user->setPassword($post_user['password']);
+                        $user->setEmail($post_user['email']);
+                        $user->setCity($post_user['city']);
+                        $user->setState($post_user['state']);
+                        $user->setZip($post_user['zip']);
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+                    }
+                } else {
+                    $this->redirectToRoute('homepage');
+                }
+                break;
+            case 'edit':
+                $user = $entityManager->getRepository(Users::class)->find($post_user['id']);
+                $user->setUsername($post_user['username']);
+                $user->setPassword($post_user['password']);
+                $user->setEmail($post_user['email']);
+                $user->setCity($post_user['city']);
+                $user->setState($post_user['state']);
+                $user->setZip($post_user['zip']);
+                $entityManager->flush();
+                break;
+            default:
+                $this->redirectToRoute('homepage');
+        }
+
+
+        return $this->render('properties/properties.submit.html.twig', ['user' => $post_user, 'action' => $action]);
+    }
+
+    /**
+     * @Route("/property/w/{id}/{action}", name="properties.action", methods={"GET","POST"})
      * @return Response
      */
     public function action(int $id, string $action, ManagerRegistry $doctrine): Response
@@ -28,9 +89,12 @@ class PropertiesController extends AbstractController
         $entityManager = $doctrine->getManager();
         $user = $entityManager->getRepository(Users::class)->find($id);
 
-        if ($action === 'delete') {
-            // todo => Delete user from db and redirect him to submit page
-            return $this->redirectToRoute('properties.submit');
+        if(!$user) {
+            return $this->redirectToRoute('homepage');
+        } else if ($action === 'delete') {
+            $entityManager->remove($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('properties.submit', ['action' => $action]);
         }
 
         return $this->render('properties/properties.html.twig', [
@@ -38,43 +102,6 @@ class PropertiesController extends AbstractController
             'id' => $id,
             'user' => $user,
         ]);
-    }
-
-    /**
-     * @Route("/properties/submit/{action}", name="properties.submit", methods={"GET","POST"})
-     * @return Response
-     * */
-    public function submit(ManagerRegistry $doctrine, string $action) :Response {
-        $entityManager = $doctrine->getManager();
-        // todo => Show confirmation message
-        // todo => Add user if [action === new]
-        if(count($_POST) < 5) {
-            return $this->redirectToRoute('homepage');
-        }
-        $new_user = [
-            'username' => $_POST['username'],
-            'password' => $_POST['password'],
-            'email' => strtolower($_POST['username'].'@'.$_POST['suffix_mail']),
-            'city' => $_POST['city'],
-            'state' => $_POST['state'],
-            'zip' => $_POST['zip'],
-        ];
-        if(!($entityManager->getRepository(Users::class)->findBy(['username' => $new_user['username']]))) {
-            $user = new Users();
-            $user->setUsername($new_user['username']);
-            $user->setPassword($new_user['password']);
-            $user->setEmail($new_user['email']);
-            $user->setCity($new_user['city']);
-            $user->setState($new_user['state']);
-            $user->setZip($new_user['zip']);
-            $entityManager->persist($user);
-            $entityManager->flush();
-        } else {
-            $user = $entityManager->getRepository(Users::class)->find(4);
-            $user->setUsername = "Alexis2";
-            $entityManager->flush();
-        }
-        return $this->render('properties/properties.submit.html.twig', ['user' => $new_user]);
     }
 
 }

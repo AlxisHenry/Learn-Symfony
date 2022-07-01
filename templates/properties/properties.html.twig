@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="container d-flex justify-center flex-column mt-5">
-    <form class="needs-validation d-flex justify-center flex-column" method="POST" action="/properties/{{action is defined ? action : 'new'}}/submit">
+    <form class="needs-validation d-flex justify-center flex-column" method="POST" action="/properties/submit/{{action is defined ? action : 'new'}}">
         <div class="form-row">
             <div class="col-md mb-3">
                 <label for="validationTooltip01">Username</label>
@@ -57,6 +57,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="id" value="{{ user is defined ? user.id : '' }}">
         <input type="hidden" name="action" value="{{ action is defined ? action : 'new' }}">
         <button class="btn btn-primary py-4 text-uppercase" type="submit">Submit form</button>
     </form>
