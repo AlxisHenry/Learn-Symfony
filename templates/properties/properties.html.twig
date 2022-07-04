@@ -57,6 +57,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="token" value="{{ csrf_token("action") }}"/>
         <input type="hidden" name="id" value="{{ user is defined ? user.id : '' }}">
         <input type="hidden" name="action" value="{{ action is defined ? action : 'new' }}">
         <button class="btn btn-primary py-4 text-uppercase" type="submit">Submit form</button>

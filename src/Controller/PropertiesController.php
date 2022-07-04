@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class PropertiesController extends AbstractController
 {
@@ -40,8 +41,13 @@ class PropertiesController extends AbstractController
                 'city' => $_POST['city'],
                 'state' => $_POST['state'],
                 'zip' => $_POST['zip'],
-                'id' => $_POST['id'] ?? ''
+                'id' => $_POST['id'] ?? '',
+                'token' => $_POST['token']
             ];
+        }
+
+        if(!$this->isCsrfTokenValid('action', $post_user['token'])) {
+            return $this->redirectToRoute('homepage');
         }
 
         switch ($action) {
