@@ -56,7 +56,7 @@ $ chmod +x setup.sh && ./setup.sh
 
 ### :gear: Configuration
 
-````bash
+```bash
 $ cp .env.example .env
 ```
 
